@@ -13,6 +13,6 @@ students = [
   "Dex Lex AzluthorZizzle",
 ]
 student_count = students.length
-student_count.times do |i| puts students[i] end
+students.each { |student| puts student }
 
 print "unfortunately there are #{student_count} students"
