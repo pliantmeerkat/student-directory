@@ -4,7 +4,9 @@ def print_header
 end
 
 def print_names(students)
-  students.each { |student| puts student }
+  students.each do |student|
+    puts "#{student[:name]} (#{student[:cohort]}) cohort"
+  end
 end
 
 def print_footer(num)
@@ -12,15 +14,15 @@ def print_footer(num)
 end
 
 students = [
-  "Ginger Chav",
-  "Chav Chavington",
-  "Ali G",
-  "Vicky Pollard",
-  "Jeremy Corbyn",
-  "All Fortnite Players",
-  "H-Annibalzz",
-  "Dr Lectoz",
-  "Dex Lex AzluthorZizzle",
+  { name: "Ginger Chav", cohort: :november },
+  { name: "Chav Chavington", cohort: :december },
+  { name: "Ali G", cohort: :february },
+  { name: "Vicky Pollard", cohort: :june },
+  { name: "Jeremy Corbyn", cohort: :december },
+  { name: "All Fortnite Players", cohort: :may },
+  { name: "H-Annibalzz", cohort: :september },
+  { name: "Dr Lectoz", cohort: :july },
+  {name: "Dex Lex AzluthorZizzle", cohort: :september }
 ]
 student_count = students.length
 
