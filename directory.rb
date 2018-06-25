@@ -9,3 +9,5 @@ puts "All Fortnite Players"
 puts "H-Annibalzz"
 puts "Dr Lectoz"
 puts "Dex Lex AzluthorZizzle"
+
+print "unfortunately there are 9 students"
