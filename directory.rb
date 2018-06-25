@@ -37,14 +37,14 @@ def input_students
   puts "enter the names of the students".center(12),
         "to finish enter return twice".center(8)
   students = []
-  name = gets.chomp # or name.strip! if 1st and last chars whitespace :
+  name = STDIN.gets.chomp # or name.strip! if 1st and last chars whitespace :
                     # if name[1] && name[name.length -1] == " " then name.strip!
   while !name.empty? do
     puts "enter a cohort please"
-    cohor = gets.chomp
+    cohor = STDIN.gets.chomp
     students << { name: name, cohort: cohor }
     puts "now we have #{students.count} students"
-    name = gets.chomp
+    name = STDIN.gets.chomp
   end
   return students
 end
@@ -55,12 +55,15 @@ def show_students(students)
   print_footer(students.length)
 end
 
+def change_filename
+
+end
+
 def menu_select(selection, students)
   case selection
     when "1"
       students += input_students
     when "2"
-      puts students
       show_students(students)
     when "3"
       write_file(students, "students.csv")
@@ -83,13 +86,20 @@ def menu_select(selection, students)
   return students
 end
 
-def read_file(filename)
+def read_file()
   output = []
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
+  filename = ARGV.first
+  filename = "students.csv" if filename.nil?
+  if File.exists?(filename)
+    file = File.open(filename)
+    file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     output << {name: name, cohort: cohort.to_sym}
   end
+  else puts "error #{filename} non existant"
+    exit
+  end
+
   file.close
   return output
 
@@ -107,12 +117,12 @@ def write_file(text, filename)
 end
 
 def interactive_menu
-  students = read_file("students.csv")
+  students = read_file()
   loop do
 
     puts "\n1. input students\n2. show students\n3. save to file\n4. \n5." +
          "\n6. \n7. \n8. \n9. Exit"
-    students = menu_select(gets.chomp, students)
+    students = menu_select(STDIN.gets.chomp, students)
 
 
   end
