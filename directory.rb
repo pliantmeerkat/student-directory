@@ -1,13 +1,18 @@
+
 puts "the students of U Wot M8 Academy"
 puts "---------------------------------"
-puts "Ginger Chav"
-puts "Chav Chavington"
-puts "Ali G"
-puts "Vicky Pollard"
-puts "Jeremy Corbyn"
-puts "All Fortnite Players"
-puts "H-Annibalzz"
-puts "Dr Lectoz"
-puts "Dex Lex AzluthorZizzle"
+students = [
+  "Ginger Chav",
+  "Chav Chavington",
+  "Ali G",
+  "Vicky Pollard",
+  "Jeremy Corbyn",
+  "All Fortnite Players",
+  "H-Annibalzz",
+  "Dr Lectoz",
+  "Dex Lex AzluthorZizzle",
+]
+student_count = students.length
+student_count.times do |i| puts students[i] end
 
-print "unfortunately there are 9 students"
+print "unfortunately there are #{student_count} students"
