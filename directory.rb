@@ -1,3 +1,6 @@
+require 'fileutils' # for creating new files
+require 'csv'
+
 def print_header
   puts "the students of U Wot M8 Academy"
   puts "---------------------------------"
@@ -43,7 +46,7 @@ def input_students
     puts "enter a cohort please"
     cohor = STDIN.gets.chomp
     students << { name: name, cohort: cohor }
-    puts "now we have #{students.count} students"
+    puts "#{students.count} students added"
     name = STDIN.gets.chomp
   end
   return students
@@ -55,11 +58,7 @@ def show_students(students)
   print_footer(students.length)
 end
 
-def change_filename
-
-end
-
-def menu_select(selection, students)
+def menu_select(selection, students, filename)
   case selection
     when "1"
       students += input_students
@@ -68,7 +67,8 @@ def menu_select(selection, students)
     when "3"
       write_file(students, "students.csv")
     when "4"
-
+      puts "\nnote: this requires a restart to work"
+      clear_file(filename)
     when "5"
 
     when "6"
@@ -76,7 +76,7 @@ def menu_select(selection, students)
     when "7"
 
     when "8"
-
+      print_source_code
     when "9"
       exit
     else
@@ -86,48 +86,49 @@ def menu_select(selection, students)
   return students
 end
 
-def read_file()
+def print_source_code
+
+  $><<open($0).read # opens the source file $0 and prints it
+
+end
+
+def read_file(filename)
   output = []
-  filename = ARGV.first
-  filename = "students.csv" if filename.nil?
-  if File.exists?(filename)
-    file = File.open(filename)
-    file.readlines.each do |line|
-    name, cohort = line.chomp.split(",")
-    output << {name: name, cohort: cohort.to_sym}
-  end
-  else puts "error #{filename} non existant"
-    exit
-  end
-
-  file.close
+  File.open(filename, "r") do |f|
+    f.readlines.each do |line|
+      name, cohort = line.chomp.split(",")
+      output << {name: name, cohort: cohort.to_sym}
+      end
+    end
   return output
-
 end
 
 def write_file(text, filename)
-  file = File.open(filename, "w")
-  puts text
-  text.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  CSV.open(filename, "a") do |f| # a so file is appended not re-written
+    text.each do |student|
+      f << [student[:name], student[:cohort]]
+    end
   end
-  file.close
+end
+
+def clear_file(filename)
+  File.open(filename, "w") do |f|
+    f.print("") # will replace contents with empty string
+  end
 end
 
 def interactive_menu
-  students = read_file()
+  filename = "students.csv" # default file value
+  if !File.exists?(filename) # create new file if none present
+    FileUtils.touch("students.csv")
+  end
+  students = read_file(filename)
   loop do
 
-    puts "\n1. input students\n2. show students\n3. save to file\n4. \n5." +
-         "\n6. \n7. \n8. \n9. Exit"
-    students = menu_select(STDIN.gets.chomp, students)
-
-
+    puts "\n1. input students\n2. show students\n3. save to file\n" +
+         "4. clear program data \n5. \n6. \n7. \n8. print code \n9. Exit"
+    students = menu_select(STDIN.gets.chomp, students, filename)
   end
-
-
 end
 
 interactive_menu
